@@ -1,0 +1,306 @@
+<div class="devkripa-invoice-shell">
+  <div class="devkripa-container">
+    
+    <!-- Header Block -->
+    <div class="header-section">
+      <div class="shlok">|| Shri Ganeshay Namah ||</div>
+      <h1 class="company-name">{{invoice.billedBy.name}}</h1>
+      <div class="company-address">
+        {{#if invoice.billedBy.street}}{{invoice.billedBy.street}}{{/if}}
+        {{#if invoice.billedBy.city}}, {{invoice.billedBy.city}}{{/if}}
+        {{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}
+        {{#if invoice.billedBy.pincode}} - {{invoice.billedBy.pincode}}{{/if}}
+        {{#if invoice.billedBy.country}}, {{invoice.billedBy.country}}{{/if}}
+      </div>
+      <div class="company-tax-info">
+        {{#if invoice.billedBy.gstin}}<strong>GSTIN:</strong> {{invoice.billedBy.gstin}}{{/if}}
+        {{#if invoice.billedBy.panNumber}}&nbsp;&nbsp;<strong>PAN No.</strong> {{invoice.billedBy.panNumber}}{{/if}}
+        {{#if invoice.billedBy.phone}}&nbsp;&nbsp;<strong>Phone</strong> {{invoice.billedBy.phone}}{{/if}}
+      </div>
+    </div>
+
+    <!-- Title Bar -->
+    <div class="title-bar">
+      <h2><u>{{#if invoice.invoiceTitle}}{{invoice.invoiceTitle}}{{else}}TAX INVOICE{{/if}}</u></h2>
+    </div>
+
+    <!-- 3-Column Metadata Block -->
+    <div class="meta-grid">
+      <!-- Column 1: Billed & Shipped To -->
+      <div class="meta-col billed-to-col">
+        <h3>Billed & Shipped To</h3>
+        <div class="meta-content">
+          <p class="client-name"><strong>{{invoice.billedTo.name}}</strong></p>
+          <p class="client-address">
+            {{#if invoice.billedTo.street}}{{invoice.billedTo.street}}<br/>{{/if}}
+            {{#if invoice.billedTo.city}}{{invoice.billedTo.city}}{{/if}}
+            {{#if invoice.billedTo.state}}, {{invoice.billedTo.state}}{{/if}}
+            {{#if invoice.billedTo.pincode}} - {{invoice.billedTo.pincode}}{{/if}}
+            {{#if invoice.billedTo.country}}<br/>{{invoice.billedTo.country}}{{/if}}
+          </p>
+          {{#if invoice.billedTo.gstin}}
+            <p><strong>GSTIN:</strong> {{invoice.billedTo.gstin}}</p>
+          {{/if}}
+          {{#if (getItemCustomField invoice.billedTo "DL NO")}}
+            <p><strong>DL NO:</strong> {{getItemCustomField invoice.billedTo "DL NO"}}</p>
+          {{/if}}
+          {{#if invoice.billedTo.phone}}
+            <p><strong>Phone:</strong> {{invoice.billedTo.phone}}</p>
+          {{/if}}
+        </div>
+      </div>
+
+      <!-- Column 2: Transport Details -->
+      <div class="meta-col transport-col">
+        <h3>Transport Details</h3>
+        <div class="meta-content">
+          <table class="meta-table">
+            {{#if invoice.transportDetails.transportMode}}
+              <tr><td><strong>Transport Mode:</strong></td><td>{{invoice.transportDetails.transportMode}}</td></tr>
+            {{/if}}
+            {{#if invoice.transportDetails.transporter.name}}
+              <tr><td><strong>Transporter:</strong></td><td>{{invoice.transportDetails.transporter.name}}</td></tr>
+            {{else if invoice.transportDetails.transporterName}}
+              <tr><td><strong>Transporter:</strong></td><td>{{invoice.transportDetails.transporterName}}</td></tr>
+            {{/if}}
+            {{#if invoice.transportDetails.transporterId}}
+              <tr><td><strong>Transporter ID:</strong></td><td>{{invoice.transportDetails.transporterId}}</td></tr>
+            {{/if}}
+            {{#if invoice.transportDetails.challanDate}}
+              <tr><td><strong>Challan Date:</strong></td><td>{{formateShortDateWithOffset invoice.transportDetails.challanDate invoice.ownerOffset}}</td></tr>
+            {{/if}}
+            {{#if invoice.transportDetails.challanNumber}}
+              <tr><td><strong>Challan Number:</strong></td><td>{{invoice.transportDetails.challanNumber}}</td></tr>
+            {{/if}}
+            {{#if invoice.transportDetails.vehicleType}}
+              <tr><td><strong>Vehicle Type:</strong></td><td>{{invoice.transportDetails.vehicleType}}</td></tr>
+            {{/if}}
+            {{#if invoice.transportDetails.vehicleNumber}}
+              <tr><td><strong>Vehicle Number:</strong></td><td>{{invoice.transportDetails.vehicleNumber}}</td></tr>
+            {{/if}}
+          </table>
+        </div>
+      </div>
+
+      <!-- Column 3: Invoice Details -->
+      <div class="meta-col invoice-details-col">
+        <div class="meta-content">
+          <table class="meta-table right-aligned">
+            <tr>
+              <td><strong>Invoice #</strong></td>
+              <td class="value"><strong>{{invoice.invoiceNumber}}</strong></td>
+            </tr>
+            <tr>
+              <td><strong>Invoice Date</strong></td>
+              <td class="value">{{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</td>
+            </tr>
+            {{#if invoice.dueDate}}
+              <tr>
+                <td><strong>Due Date</strong></td>
+                <td class="value"><strong>{{formateShortDateWithOffset invoice.dueDate invoice.ownerOffset}}</strong></td>
+              </tr>
+            {{/if}}
+            {{#if invoice.purchaseOrderNumber}}
+              <tr>
+                <td><strong>PO Number</strong></td>
+                <td class="value">{{invoice.purchaseOrderNumber}}</td>
+              </tr>
+            {{/if}}
+            {{#if (getItemCustomField invoice "Delivery Note")}}
+              <tr>
+                <td><strong>Delivery Note</strong></td>
+                <td class="value">{{getItemCustomField invoice "Delivery Note"}}</td>
+              </tr>
+            {{else if invoice.transportDetails.extraInformation}}
+              <tr>
+                <td><strong>Delivery Note</strong></td>
+                <td class="value">{{invoice.transportDetails.extraInformation}}</td>
+              </tr>
+            {{/if}}
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Items Ledger Table -->
+    <table class="items-ledger-table">
+      <thead>
+        <tr>
+          <th class="col-num">#</th>
+          <th class="col-item-desc">ITEM</th>
+          <th class="col-hsn">HSN</th>
+          <th class="col-pcs">PCS</th>
+          <th class="col-mtr">MTR</th>
+          <th class="col-uom">UOM</th>
+          <th class="col-fold">Fold Less %</th>
+          <th class="col-rate">Rate</th>
+          <th class="col-disco">Disco<br/>unt</th>
+          <th class="col-gst-rate">GST<br/>Rate</th>
+          <th class="col-net-mtr">Net<br/>MTR</th>
+          <th class="col-amount">Amount</th>
+          <th class="col-igst">IGST</th>
+          <th class="col-total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each invoice.items}}
+          <tr>
+            <td class="col-num text-center">{{addOne @index}}</td>
+            <td class="col-item-desc">
+              <strong>{{name}}</strong>
+              {{#if description}}
+                <div class="item-description-text">
+                  {{> MarkdownViewer (prepareMarkdownViewerData description) }}
+                </div>
+              {{/if}}
+            </td>
+            <td class="col-hsn text-center">{{#if hsn}}{{hsn}}{{else}}-{{/if}}</td>
+            <td class="col-pcs text-center">{{getItemPcs this}}</td>
+            <td class="col-mtr text-right">{{getItemMtr this}}</td>
+            <td class="col-uom text-center">{{getItemUom this}}</td>
+            <td class="col-fold text-right">{{getItemFoldLess this}}</td>
+            <td class="col-rate text-right">{{invoice.customCurrencySymbol}}{{rate}}</td>
+            <td class="col-disco text-right">{{getItemDiscount this}}</td>
+            <td class="col-gst-rate text-right">{{getItemGstRate this}}</td>
+            <td class="col-net-mtr text-right"><strong>{{getItemNetMtr this}}</strong></td>
+            <td class="col-amount text-right">{{invoice.customCurrencySymbol}}{{getItemAmount this}}</td>
+            <td class="col-igst text-right">{{invoice.customCurrencySymbol}}{{getItemIgst this}}</td>
+            <td class="col-total text-right"><strong>{{invoice.customCurrencySymbol}}{{getItemTotal this}}</strong></td>
+          </tr>
+        {{/each}}
+        
+        <!-- Padded empty rows for ledger aesthetic -->
+        {{#padRows invoice.items 10}}
+          <tr class="padded-row">
+            <td class="col-num">&nbsp;</td>
+            <td class="col-item-desc">&nbsp;</td>
+            <td class="col-hsn">&nbsp;</td>
+            <td class="col-pcs">&nbsp;</td>
+            <td class="col-mtr">&nbsp;</td>
+            <td class="col-uom">&nbsp;</td>
+            <td class="col-fold">&nbsp;</td>
+            <td class="col-rate">&nbsp;</td>
+            <td class="col-disco">&nbsp;</td>
+            <td class="col-gst-rate">&nbsp;</td>
+            <td class="col-net-mtr">&nbsp;</td>
+            <td class="col-amount">&nbsp;</td>
+            <td class="col-igst">&nbsp;</td>
+            <td class="col-total">&nbsp;</td>
+          </tr>
+        {{/padRows}}
+
+        <!-- Totals Rows -->
+        {{#if invoice.finalTotal.discount}}
+          <tr class="total-summary-row">
+            <td colspan="12" class="total-label">Discount ({{invoice.discount.amount}}%)</td>
+            <td colspan="2" class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.discount}}</td>
+          </tr>
+        {{/if}}
+        {{#if invoice.finalTotal.sgst}}
+          <tr class="total-summary-row">
+            <td colspan="12" class="total-label">SGST</td>
+            <td colspan="2" class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
+          </tr>
+        {{/if}}
+        {{#if invoice.finalTotal.cgst}}
+          <tr class="total-summary-row">
+            <td colspan="12" class="total-label">CGST</td>
+            <td colspan="2" class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
+          </tr>
+        {{/if}}
+        {{#if invoice.finalTotal.igst}}
+          <tr class="total-summary-row">
+            <td colspan="12" class="total-label">IGST</td>
+            <td colspan="2" class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</td>
+          </tr>
+        {{/if}}
+        <tr class="total-summary-row grand-total-row">
+          <td colspan="12" class="total-label">Total (INR)</td>
+          <td colspan="2" class="total-val"><strong>{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Total In Words Row -->
+    <div class="total-in-words-section">
+      <strong>Invoice Total (in words):</strong> &nbsp;
+      {{#if invoice.customLabels.totalInWordsValue}}
+        {{invoice.customLabels.totalInWordsValue}}
+      {{else if invoice.totalInWords}}
+        {{invoice.totalInWords}}
+      {{else}}
+        -
+      {{/if}}
+    </div>
+
+    <!-- Footer Terms & UPI Details -->
+    <div class="footer-grid">
+      <!-- Column 1: Terms & Conditions & Declaration -->
+      <div class="footer-col terms-col">
+        {{#if invoice.terms.length}}
+          <div class="footer-block-header">Terms and Conditions</div>
+          <ol class="terms-list">
+            {{#each invoice.terms}}
+              {{#each this.terms}}
+                <li>{{this}}</li>
+              {{/each}}
+            {{/each}}
+          </ol>
+        {{/if}}
+        
+        {{#if invoice.notes}}
+          <div class="footer-block-header">Declaration</div>
+          <div class="declaration-content">
+            {{> MarkdownViewer (prepareMarkdownViewerData invoice.notes) }}
+          </div>
+        {{/if}}
+      </div>
+
+      <!-- Column 2: Bank/UPI details & QR Code -->
+      <div class="footer-col bank-col">
+        <div class="bank-details-wrapper">
+          <div class="footer-block-header">Bank and UPI details</div>
+          <table class="bank-details-table">
+            {{#if invoice.bankAccount.bank}}
+              <tr><td>Bank Name</td><td><strong>{{invoice.bankAccount.bank}}</strong></td></tr>
+            {{else if invoice.bankAccount.bankName}}
+              <tr><td>Bank Name</td><td><strong>{{invoice.bankAccount.bankName}}</strong></td></tr>
+            {{/if}}
+            {{#if invoice.bankAccount.accountHolderName}}
+              <tr><td>Account Holder Name</td><td><strong>{{invoice.bankAccount.accountHolderName}}</strong></td></tr>
+            {{/if}}
+            {{#if invoice.bankAccount.accountNo}}
+              <tr><td>Account Number</td><td><strong>{{invoice.bankAccount.accountNo}}</strong></td></tr>
+            {{else if invoice.bankAccount.accountNumber}}
+              <tr><td>Account Number</td><td><strong>{{invoice.bankAccount.accountNumber}}</strong></td></tr>
+            {{/if}}
+            {{#if invoice.bankAccount.ifsc}}
+              <tr><td>IFSC</td><td><strong>{{invoice.bankAccount.ifsc}}</strong></td></tr>
+            {{/if}}
+            {{#if invoice.bankAccount.accountType}}
+              <tr><td>Account Type</td><td><strong>{{invoice.bankAccount.accountType}}</strong></td></tr>
+            {{/if}}
+          </table>
+        </div>
+
+        <!-- Scan to Pay Block -->
+        {{#if mapped.visibility.showBankUpiSection}}
+          <div class="scan-to-pay-container">
+            <div class="scan-header">Scan To Pay</div>
+            {{#if mapped.qr.upi}}
+              <img class="scan-qr-code" src="{{mapped.qr.upi}}" alt="UPI QR Code" />
+            {{/if}}
+            {{#if mapped.upi.id}}
+              <div class="scan-upi-id">{{mapped.upi.id}}</div>
+            {{/if}}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+  </div>
+  
+  <div class="e-generated-footer">
+    This is an electronically generated document, no signature is required.
+  </div>
+</div>
