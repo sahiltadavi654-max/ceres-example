@@ -1,0 +1,252 @@
+/* Revvity Quotation Styles */
+
+.revvity-quote-shell {
+  font-family: var(--ceres-font-family, 'Inter', 'Outfit', 'Helvetica Neue', Arial, sans-serif);
+  color: #1f2937;
+  background-color: #ffffff;
+  padding: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  font-size: 11.5px;
+  line-height: 1.4;
+  box-sizing: border-box;
+}
+
+.revvity-container {
+  box-sizing: border-box;
+}
+
+/* Top Meta Block (Ref. No. & Date) */
+.top-meta-block {
+  margin-bottom: 20px;
+}
+
+.meta-details-table {
+  border-collapse: collapse;
+}
+
+.meta-details-table td {
+  padding: 2px 0;
+  vertical-align: middle;
+}
+
+.meta-details-table td:first-child {
+  width: 70px;
+  color: #111827;
+}
+
+/* Header Rounded Card */
+.header-card {
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  gap: 20px;
+  margin-bottom: 30px;
+  background-color: #ffffff;
+}
+
+.card-left {
+  flex-shrink: 0;
+}
+
+.company-logo {
+  width: 75px;
+  height: 75px;
+  object-fit: contain;
+  border-radius: 10px;
+}
+
+.default-logo-placeholder {
+  width: 75px;
+  height: 75px;
+  background-color: #e52929;
+  color: #ffffff;
+  border-radius: 10px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.card-right {
+  flex-grow: 1;
+}
+
+.company-name {
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 4px 0;
+}
+
+.company-address {
+  font-size: 11.5px;
+  color: #4b5563;
+  line-height: 1.4;
+}
+
+.card-divider {
+  height: 1px;
+  background-color: #e5e7eb;
+  margin: 12px 0;
+}
+
+.kind-attention {
+  font-size: 11.5px;
+  color: #111827;
+  margin-bottom: 8px;
+}
+
+.intro-greeting {
+  font-size: 11.5px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+/* Items Table */
+.items-quote-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 35px;
+}
+
+.items-quote-table th {
+  background-color: #0b1a30;
+  color: #ffffff;
+  font-size: 10.5px;
+  font-weight: 700;
+  text-align: center;
+  padding: 10px 8px;
+  text-transform: uppercase;
+  border-right: 1px solid #1e293b;
+}
+
+.items-quote-table th:last-child {
+  border-right: none;
+}
+
+.items-quote-table td {
+  padding: 8px;
+  border-bottom: 1px solid #e5e7eb;
+  border-right: 1px solid #e5e7eb;
+  vertical-align: middle;
+  box-sizing: border-box;
+}
+
+.items-quote-table td:first-child {
+  border-left: 1px solid #e5e7eb;
+}
+
+.items-quote-table td:last-child {
+  border-right: 1px solid #e5e7eb;
+}
+
+/* Column Widths & Alignments */
+.col-idx { width: 4%; text-align: center; }
+.col-desc { width: 50%; text-align: left; }
+.col-hsn { width: 12%; text-align: center; }
+.col-qty { width: 8%; text-align: center; }
+.col-rate { width: 13%; text-align: right; }
+.col-amount { width: 13%; text-align: right; }
+
+.items-quote-table td.text-center { text-align: center; }
+.items-quote-table td.text-right { text-align: right; }
+.items-quote-table td.text-left { text-align: left; }
+
+.item-description-details {
+  font-size: 9.5px;
+  color: #4b5563;
+  margin-top: 3px;
+  font-weight: normal;
+}
+
+/* Padded rows */
+.padded-row td {
+  height: 28px;
+  padding: 0;
+}
+
+/* Totals Summary Rows */
+.totals-row td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.totals-row .total-label {
+  text-align: right;
+  font-weight: bold;
+  border-left: 1px solid #e5e7eb;
+}
+
+.totals-row .total-val {
+  text-align: right;
+}
+
+.grand-total-row td {
+  background-color: #ffebee;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.grand-total-row .total-label {
+  color: #b91c1c;
+}
+
+.grand-total-row .total-val {
+  color: #b91c1c;
+  font-size: 12px;
+}
+
+/* Terms and Conditions Section */
+.terms-section {
+  margin-top: 25px;
+  page-break-inside: avoid;
+}
+
+.terms-header {
+  font-size: 13px;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 10px 0;
+  display: inline-block;
+  border-bottom: 1.5px solid #111827;
+  padding-bottom: 2px;
+}
+
+.terms-ol-list {
+  margin: 0;
+  padding-left: 16px;
+}
+
+.terms-ol-list li {
+  margin-bottom: 6px;
+  line-height: 1.5;
+  color: #374151;
+}
+
+/* Print Optimization */
+@media print {
+  body {
+    background-color: #ffffff;
+    margin: 0;
+  }
+  .revvity-quote-shell {
+    padding: 0;
+    max-width: 100%;
+  }
+  .header-card {
+    border-color: #9ca3af;
+  }
+  .items-quote-table th {
+    background-color: #0b1a30 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .grand-total-row td {
+    background-color: #ffebee !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .meta-details-table, .header-card, .items-quote-table, .terms-section {
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,160 @@
+<div class="revvity-quote-shell">
+  <div class="revvity-container">
+    
+    <!-- Top Meta Details (Ref. No. & Date) -->
+    <div class="top-meta-block">
+      <table class="meta-details-table">
+        <tr>
+          <td><strong>Ref. No.</strong></td>
+          <td>: &nbsp;{{invoice.invoiceNumber}}</td>
+        </tr>
+        <tr>
+          <td><strong>Dated</strong></td>
+          <td>: &nbsp;{{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Rounded Header Card -->
+    <div class="header-card">
+      <div class="card-left">
+        {{#if invoice.billedBy.logo}}
+          <img src="{{invoice.billedBy.logo}}" alt="Billed By Logo" class="company-logo" />
+        {{else}}
+          <!-- Default Mock Logo matching the red building in the design -->
+          <div class="default-logo-placeholder">
+            <svg viewBox="0 0 100 100" fill="currentColor">
+              <rect x="15" y="45" width="25" height="45" rx="2" />
+              <rect x="45" y="15" width="40" height="75" rx="3" />
+              <rect x="22" y="55" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="22" y="70" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="52" y="25" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="68" y="25" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="52" y="40" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="68" y="40" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="52" y="55" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="68" y="55" width="10" height="10" rx="1" fill="#fff" />
+              <rect x="58" y="72" width="14" height="18" rx="1" fill="#fff" />
+            </svg>
+          </div>
+        {{/if}}
+      </div>
+      <div class="card-right">
+        <h1 class="company-name">{{invoice.billedBy.name}}</h1>
+        <div class="company-address">
+          {{#if invoice.billedBy.street}}{{invoice.billedBy.street}}{{/if}}
+          {{#if invoice.billedBy.city}}, {{invoice.billedBy.city}}{{/if}}
+          {{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}
+          {{#if invoice.billedBy.pincode}} {{invoice.billedBy.pincode}}{{/if}}
+          {{#if invoice.billedBy.country}} ({{invoice.billedBy.country}}){{/if}}
+        </div>
+        
+        <div class="card-divider"></div>
+        
+        <div class="kind-attention">
+          <strong>K/A :-</strong> &nbsp;
+          {{#if (getItemCustomField invoice "K/A")}}
+            {{getItemCustomField invoice "K/A"}}
+          {{else}}
+            {{#if invoice.billedTo.name}}{{invoice.billedTo.name}}{{/if}}
+            {{#if invoice.billedTo.phone}} - {{invoice.billedTo.phone}}{{/if}}
+          {{/if}}
+        </div>
+
+        <div class="intro-greeting">
+          <strong>Dear Sir,</strong> As per your requirement of Various gas items. for CDER AIIMS. We are pleased to submit our offer as below.
+        </div>
+      </div>
+    </div>
+
+    <!-- Items table -->
+    <table class="items-quote-table">
+      <thead>
+        <tr>
+          <th class="col-idx"></th>
+          <th class="col-desc">DESCRIPTION</th>
+          <th class="col-hsn">HSN/ SAC</th>
+          <th class="col-qty">Qty</th>
+          <th class="col-rate">Rate</th>
+          <th class="col-amount">Amount</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each invoice.items}}
+          <tr>
+            <td class="col-idx text-center">{{addOne @index}}</td>
+            <td class="col-desc">
+              <strong>{{name}}</strong>
+              {{#if description}}
+                <div class="item-description-details">
+                  {{> MarkdownViewer (prepareMarkdownViewerData description) }}
+                </div>
+              {{/if}}
+            </td>
+            <td class="col-hsn text-center">{{#if hsn}}{{hsn}}{{else}}-{{/if}}</td>
+            <td class="col-qty text-center">{{formatQty quantity}}</td>
+            <td class="col-rate text-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue rate}}</td>
+            <td class="col-amount text-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue amount}}</td>
+          </tr>
+        {{/each}}
+
+        <!-- Pad empty rows -->
+        {{#padRows invoice.items 10}}
+          <tr class="padded-row">
+            <td class="col-idx">&nbsp;</td>
+            <td class="col-desc">&nbsp;</td>
+            <td class="col-hsn">&nbsp;</td>
+            <td class="col-qty">&nbsp;</td>
+            <td class="col-rate">&nbsp;</td>
+            <td class="col-amount">&nbsp;</td>
+          </tr>
+        {{/padRows}}
+
+        <!-- Totals block -->
+        {{#if invoice.finalTotal.discount}}
+          <tr class="totals-row">
+            <td colspan="5" class="total-label">Discount ({{invoice.discount.amount}}%)</td>
+            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.discount}}</td>
+          </tr>
+        {{/if}}
+        {{#if invoice.finalTotal.sgst}}
+          <tr class="totals-row">
+            <td colspan="5" class="total-label">SGST</td>
+            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
+          </tr>
+        {{/if}}
+        {{#if invoice.finalTotal.cgst}}
+          <tr class="totals-row">
+            <td colspan="5" class="total-label">CGST</td>
+            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
+          </tr>
+        {{/if}}
+        {{#if invoice.finalTotal.igst}}
+          <tr class="totals-row">
+            <td colspan="5" class="total-label">IGST</td>
+            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</td>
+          </tr>
+        {{/if}}
+        <tr class="totals-row grand-total-row">
+          <td colspan="5" class="total-label">Total (INR)</td>
+          <td class="total-val"><strong>{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</strong></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- Terms and Conditions -->
+    {{#if invoice.terms.length}}
+      <div class="terms-section">
+        <h3 class="terms-header">Terms and Conditions</h3>
+        <ol class="terms-ol-list">
+          {{#each invoice.terms}}
+            {{#each this.terms}}
+              <li>{{this}}</li>
+            {{/each}}
+          {{/each}}
+        </ol>
+      </div>
+    {{/if}}
+
+  </div>
+</div>
