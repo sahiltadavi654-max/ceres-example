@@ -781,7 +781,7 @@ class CspMetaPlugin {
             `script-src ${scriptSrc}`,
             "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://fonts.gstatic.com",
             "font-src 'self' https://fonts.gstatic.com",
-            "connect-src *",
+            "connect-src * data:",
             "img-src 'self' data: https:",
             "default-src 'self'",
           ].join("; ");
