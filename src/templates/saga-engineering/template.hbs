@@ -1,0 +1,409 @@
+<div class="saga-eng-shell">
+  <div class="saga-eng-container">
+
+    {{!-- ===== HEADER ===== --}}
+    <div class="saga-header">
+      <div class="saga-title-row">
+        <h1 class="saga-doc-title">
+          {{#if invoice.invoiceTitle}}{{invoice.invoiceTitle}}{{else}}Quotation{{/if}}
+        </h1>
+        {{> InvoiceStatus}}
+        {{> DemoBadge}}
+      </div>
+      <div class="saga-company-tagline">
+        {{#if invoice.billedBy.street}}{{invoice.billedBy.street}}{{/if}}{{#if invoice.billedBy.city}}, {{invoice.billedBy.city}}{{/if}}{{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}{{#if invoice.billedBy.pincode}}, {{invoice.billedBy.pincode}}{{/if}}
+      </div>
+    </div>
+
+    {{!-- ===== META + BILLED TO + SHIPPED TO ===== --}}
+    <div class="saga-meta-row">
+
+      {{!-- Quote metadata --}}
+      <div class="saga-meta-info">
+        <table class="saga-kv-table">
+          <tr>
+            <td class="kv-label">Quotation No.</td>
+            <td class="kv-sep">:</td>
+            <td class="kv-val">{{invoice.invoiceNumber}}</td>
+          </tr>
+          <tr>
+            <td class="kv-label">Quotation Date</td>
+            <td class="kv-sep">:</td>
+            <td class="kv-val">{{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</td>
+          </tr>
+          {{#if invoice.purchaseOrderNumber}}
+          <tr>
+            <td class="kv-label">Project Number</td>
+            <td class="kv-sep">:</td>
+            <td class="kv-val">{{invoice.purchaseOrderNumber}}</td>
+          </tr>
+          {{/if}}
+        </table>
+      </div>
+
+      {{!-- Billed To --}}
+      <div class="saga-party-block">
+        <div class="saga-party-heading">Billed to</div>
+        <div class="saga-party-name">{{invoice.billedTo.name}}</div>
+        {{#if invoice.billedTo.address}}
+          <div class="saga-party-addr">{{invoice.billedTo.address}}</div>
+        {{else}}
+          <div class="saga-party-addr">
+            {{#if invoice.billedTo.street}}{{invoice.billedTo.street}},&nbsp;{{/if}}{{#if invoice.billedTo.city}}{{invoice.billedTo.city}}{{/if}}{{#if invoice.billedTo.state}}, {{invoice.billedTo.state}}{{/if}}{{#if invoice.billedTo.pincode}} - {{invoice.billedTo.pincode}}{{/if}}
+          </div>
+        {{/if}}
+        {{#if invoice.billedTo.gstin}}<div class="saga-party-meta">GSTIN: <strong>{{invoice.billedTo.gstin}}</strong></div>{{/if}}
+        {{#each invoice.customHeaders}}
+          <div class="saga-party-meta"><span class="cf-lbl">{{label}}:</span> {{value}}</div>
+        {{/each}}
+      </div>
+
+      {{!-- Shipped To --}}
+      <div class="saga-party-block">
+        <div class="saga-party-heading">Shipped to</div>
+        {{#if invoice.shippedTo}}
+          <div class="saga-party-name">{{invoice.shippedTo.name}}</div>
+          <div class="saga-party-addr">
+            {{#if invoice.shippedTo.street}}{{invoice.shippedTo.street}},&nbsp;{{/if}}{{#if invoice.shippedTo.city}}{{invoice.shippedTo.city}}{{/if}}{{#if invoice.shippedTo.state}}, {{invoice.shippedTo.state}}{{/if}}{{#if invoice.shippedTo.pincode}} - {{invoice.shippedTo.pincode}}{{/if}}
+          </div>
+          {{#if invoice.shippedTo.gstin}}<div class="saga-party-meta">GSTIN: <strong>{{invoice.shippedTo.gstin}}</strong></div>{{/if}}
+        {{else}}
+          <div class="saga-party-name">{{invoice.billedTo.name}}</div>
+          <div class="saga-party-addr">
+            {{#if invoice.billedTo.street}}{{invoice.billedTo.street}},&nbsp;{{/if}}{{#if invoice.billedTo.city}}{{invoice.billedTo.city}}{{/if}}{{#if invoice.billedTo.state}}, {{invoice.billedTo.state}}{{/if}}{{#if invoice.billedTo.pincode}} - {{invoice.billedTo.pincode}}{{/if}}
+          </div>
+          {{#if invoice.billedTo.gstin}}<div class="saga-party-meta">GSTIN: <strong>{{invoice.billedTo.gstin}}</strong></div>{{/if}}
+        {{/if}}
+        {{#each invoice.customFooters}}
+          <div class="saga-party-meta"><span class="cf-lbl">{{label}}:</span> {{value}}</div>
+        {{/each}}
+      </div>
+
+    </div>{{!-- end .saga-meta-row --}}
+
+    {{!-- ===== INTRO PARAGRAPH ===== --}}
+    <div class="saga-intro-para">
+      <strong>Dear Sir,</strong><br/>
+      With references to above, we are pleased to quote our lowest prices for the supply of followings, subject to terms and conditions mentioned here under:
+    </div>
+
+    {{!-- ===== SHIPPED FROM + TRANSPORT DETAILS ===== --}}
+    <div class="saga-logistics-row">
+      <div class="saga-logistics-col">
+        <div class="saga-section-label">Shipped From</div>
+        {{#if invoice.shippedFrom}}
+          <div class="saga-party-name">{{invoice.shippedFrom.name}}</div>
+          <div class="saga-party-addr">
+            {{#if invoice.shippedFrom.street}}{{invoice.shippedFrom.street}},&nbsp;{{/if}}{{#if invoice.shippedFrom.city}}{{invoice.shippedFrom.city}}{{/if}}{{#if invoice.shippedFrom.state}}, {{invoice.shippedFrom.state}}{{/if}}{{#if invoice.shippedFrom.pincode}} - {{invoice.shippedFrom.pincode}}{{/if}}
+          </div>
+        {{else}}
+          <div class="saga-party-name">{{invoice.billedBy.name}}</div>
+          <div class="saga-party-addr">
+            {{#if invoice.billedBy.street}}{{invoice.billedBy.street}},&nbsp;{{/if}}{{#if invoice.billedBy.city}}{{invoice.billedBy.city}}{{/if}}{{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}{{#if invoice.billedBy.pincode}} - {{invoice.billedBy.pincode}}{{/if}}
+          </div>
+          {{#if invoice.billedBy.gstin}}<div class="saga-party-meta">GSTIN: {{invoice.billedBy.gstin}}</div>{{/if}}
+        {{/if}}
+      </div>
+      <div class="saga-logistics-col">
+        <div class="saga-section-label">Transport Details</div>
+        <table class="saga-kv-table">
+          {{#if invoice.transportDetails.transportMode}}
+            <tr><td class="kv-label">Mode</td><td class="kv-sep">:</td><td class="kv-val">{{invoice.transportDetails.transportMode}}</td></tr>
+          {{/if}}
+          {{#if invoice.transportDetails.vehicleNumber}}
+            <tr><td class="kv-label">Vehicle No.</td><td class="kv-sep">:</td><td class="kv-val">{{invoice.transportDetails.vehicleNumber}}</td></tr>
+          {{/if}}
+          {{#if invoice.transportDetails.transporterName}}
+            <tr><td class="kv-label">Transporter</td><td class="kv-sep">:</td><td class="kv-val">{{invoice.transportDetails.transporterName}}</td></tr>
+          {{/if}}
+          {{#if invoice.transportDetails.challanNumber}}
+            <tr><td class="kv-label">Challan No.</td><td class="kv-sep">:</td><td class="kv-val">{{invoice.transportDetails.challanNumber}}</td></tr>
+          {{/if}}
+        </table>
+      </div>
+    </div>
+
+    {{!-- ===== ITEMS TABLE ===== --}}
+    <table class="saga-items-table">
+      <thead>
+        <tr>
+          <th class="saga-col-num">#</th>
+          <th class="saga-col-item">Item</th>
+          <th class="saga-col-rate">Rate</th>
+          <th class="saga-col-qty">Qty</th>
+          <th class="saga-col-amount">Amount</th>
+          <th class="saga-col-disco">Discount</th>
+          <th class="saga-col-gst">GST %</th>
+          <th class="saga-col-igst">IGST</th>
+          <th class="saga-col-total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each invoice.items}}
+        <tr class="saga-item-row">
+          <td class="saga-col-num t-center">{{sagaAddOne @index}}</td>
+          <td class="saga-col-item">
+            <div class="saga-item-cell">
+              {{#if thumbnail}}
+                <img class="saga-item-thumb" src="{{thumbnail}}" alt="{{name}}" />
+              {{else if images.[0]}}
+                <img class="saga-item-thumb" src="{{images.[0]}}" alt="{{name}}" />
+              {{/if}}
+              <div class="saga-item-info">
+                <strong class="saga-item-name">{{name}}</strong>
+                {{#if sku}}<div class="saga-item-sku">SKU: {{sku}}</div>{{/if}}
+                {{#if description}}
+                  <div class="saga-item-desc">
+                    {{> MarkdownViewer (prepareMarkdownViewerData description)}}
+                  </div>
+                {{/if}}
+              </div>
+            </div>
+          </td>
+          <td class="t-right">{{../invoice.customCurrencySymbol}}{{sagaFormatCurrency rate}}</td>
+          <td class="t-center">{{sagaFormatQty quantity}}</td>
+          <td class="t-right">{{../invoice.customCurrencySymbol}}{{sagaFormatCurrency amount}}</td>
+          <td class="t-center">{{#if discount}}{{discount}}%{{else}}-{{/if}}</td>
+          <td class="t-center">{{#if gstRate}}{{gstRate}}%{{else if taxRate}}{{taxRate}}%{{else}}-{{/if}}</td>
+          <td class="t-right">{{#if igst}}{{../invoice.customCurrencySymbol}}{{sagaFormatCurrency igst}}{{else}}-{{/if}}</td>
+          <td class="t-right saga-item-total">{{../invoice.customCurrencySymbol}}{{sagaItemTotal amount igst}}</td>
+        </tr>
+        {{/each}}
+
+        {{!-- Pad empty rows to minimum --}}
+        {{#sagaPadRows invoice.items 8}}
+        <tr class="saga-padded-row">
+          <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+        </tr>
+        {{/sagaPadRows}}
+      </tbody>
+    </table>
+
+    {{!-- ===== TOTAL IN WORDS ===== --}}
+    <div class="saga-total-words">
+      <strong>Invoice Total (in words):</strong>&nbsp;
+      {{#if invoice.customLabels.totalInWordsValue}}
+        {{invoice.customLabels.totalInWordsValue}}
+      {{else if invoice.totalInWords}}
+        {{invoice.totalInWords}}
+      {{else}}
+        -
+      {{/if}}
+    </div>
+
+    {{!-- ===== BANK DETAILS + QR CODE ===== --}}
+    <div class="saga-bank-row">
+      <div class="saga-bank-details">
+        <div class="saga-section-label">Bank and UPI Details</div>
+        <table class="saga-bank-table">
+          {{#if invoice.bankAccount.bank}}
+            <tr><td>Bank Name</td><td><strong>{{invoice.bankAccount.bank}}</strong></td></tr>
+          {{else if invoice.bankAccount.bankName}}
+            <tr><td>Bank Name</td><td><strong>{{invoice.bankAccount.bankName}}</strong></td></tr>
+          {{/if}}
+          {{#if invoice.bankAccount.accountHolderName}}
+            <tr><td>Account Holder</td><td><strong>{{invoice.bankAccount.accountHolderName}}</strong></td></tr>
+          {{/if}}
+          {{#if invoice.bankAccount.accountNo}}
+            <tr><td>Account Number</td><td><strong>{{invoice.bankAccount.accountNo}}</strong></td></tr>
+          {{else if invoice.bankAccount.accountNumber}}
+            <tr><td>Account Number</td><td><strong>{{invoice.bankAccount.accountNumber}}</strong></td></tr>
+          {{/if}}
+          {{#if invoice.bankAccount.ifsc}}
+            <tr><td>IFSC</td><td><strong>{{invoice.bankAccount.ifsc}}</strong></td></tr>
+          {{/if}}
+          {{#if invoice.bankAccount.accountType}}
+            <tr><td>Account Type</td><td><strong>{{invoice.bankAccount.accountType}}</strong></td></tr>
+          {{/if}}
+          {{#if invoice.upi.upiId}}
+            <tr><td>UPI</td><td><strong>{{invoice.upi.upiId}}</strong></td></tr>
+          {{else if invoice.upi.upi}}
+            <tr><td>UPI</td><td><strong>{{invoice.upi.upi}}</strong></td></tr>
+          {{/if}}
+        </table>
+      </div>
+
+      {{!-- QR Code --}}
+      {{#if mapped.visibility.showBankUpiSection}}
+      <div class="saga-qr-block">
+        <div class="saga-section-label">Scan to pay via UPI</div>
+        {{#if mapped.qr.upi}}
+          <img class="saga-qr-img" src="{{mapped.qr.upi}}" alt="UPI QR Code" />
+        {{/if}}
+        {{#if mapped.upi.id}}
+          <div class="saga-upi-id">{{mapped.upi.id}}</div>
+        {{/if}}
+        {{#if invoice.upi.upiId}}
+          <div class="saga-upi-id">{{invoice.upi.upiId}}</div>
+        {{/if}}
+      </div>
+      {{/if}}
+
+      {{!-- Authorised Signatory --}}
+      <div class="saga-signatory-block">
+        <div class="saga-signatory-name">{{invoice.billedBy.name}}</div>
+        <div class="saga-signatory-label">Authorised Signatory</div>
+      </div>
+    </div>
+
+    {{!-- ===== TAX SUMMARY BOXES ===== --}}
+    <div class="saga-tax-summary">
+      <div class="saga-tax-box">
+        <div class="saga-tax-box-label">Sub Total</div>
+        <div class="saga-tax-box-val">{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.subTotal}}</div>
+      </div>
+      {{#if invoice.finalTotal.discount}}
+      <div class="saga-tax-box">
+        <div class="saga-tax-box-label">Discount{{#if invoice.discount}} ({{invoice.discount}}%){{/if}}</div>
+        <div class="saga-tax-box-val">{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.finalTotal.discount}}</div>
+      </div>
+      {{/if}}
+      <div class="saga-tax-box">
+        <div class="saga-tax-box-label">Taxable Amount</div>
+        <div class="saga-tax-box-val">{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.finalTotal.taxableValue}}</div>
+      </div>
+      {{#if invoice.finalTotal.cgst}}
+      <div class="saga-tax-box">
+        <div class="saga-tax-box-label">CGST</div>
+        <div class="saga-tax-box-val">{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.finalTotal.cgst}}</div>
+      </div>
+      {{/if}}
+      {{#if invoice.finalTotal.sgst}}
+      <div class="saga-tax-box">
+        <div class="saga-tax-box-label">SGST</div>
+        <div class="saga-tax-box-val">{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.finalTotal.sgst}}</div>
+      </div>
+      {{/if}}
+      {{#if invoice.finalTotal.igst}}
+      <div class="saga-tax-box">
+        <div class="saga-tax-box-label">IGST</div>
+        <div class="saga-tax-box-val">{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.finalTotal.igst}}</div>
+      </div>
+      {{/if}}
+      <div class="saga-tax-box saga-tax-box--total">
+        <div class="saga-tax-box-label">Total(INR)</div>
+        <div class="saga-tax-box-val"><strong>{{invoice.customCurrencySymbol}}{{sagaFormatCurrency invoice.finalTotal.total}}</strong></div>
+      </div>
+    </div>
+
+    {{!-- ===== TERMS & CONDITIONS ===== --}}
+    {{#if invoice.terms.length}}
+    <div class="saga-terms">
+      <div class="saga-section-label">TERMS &amp; CONDITIONS</div>
+      <ol class="saga-terms-list">
+        {{#each invoice.terms}}
+          {{#each this.terms}}
+            <li>{{this}}</li>
+          {{/each}}
+        {{/each}}
+      </ol>
+    </div>
+    {{/if}}
+
+    {{!-- ===== ADDITIONAL NOTES ===== --}}
+    {{#if invoice.notes}}
+    <div class="saga-notes">
+      <div class="saga-section-label">Additional Notes</div>
+      <div class="saga-notes-body">
+        {{> MarkdownViewer (prepareMarkdownViewerData invoice.notes)}}
+      </div>
+    </div>
+    {{/if}}
+
+    {{!-- ===== ADDITIONAL INFORMATION (custom fields) ===== --}}
+    {{#if invoice.customFields.length}}
+    <div class="saga-add-info">
+      <div class="saga-section-label">Additional Information</div>
+      {{#each invoice.customFields}}
+        <div class="saga-cf-row">
+          <span class="saga-cf-key">{{label}}:</span>
+          <span class="saga-cf-val">{{value}}</span>
+        </div>
+      {{/each}}
+    </div>
+    {{/if}}
+
+    {{!-- ===== ATTACHMENTS ===== --}}
+    {{#if invoice.attachments.length}}
+    <div class="saga-attachments">
+      <div class="saga-section-label">Attachments</div>
+      <ul class="saga-attach-list">
+        {{#each invoice.attachments}}
+          <li><a href="{{this}}" target="_blank" rel="noopener">{{this}}</a></li>
+        {{/each}}
+      </ul>
+    </div>
+    {{/if}}
+
+    {{!-- ===== TAX RATE TABLE ===== --}}
+    {{#if invoice.taxSummary}}
+    <div class="saga-tax-table-wrap">
+      <table class="saga-tax-rate-table">
+        <thead>
+          <tr>
+            <th>Tax Rate</th>
+            <th>CGST</th>
+            <th>SGST</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#sagaEnsureArray invoice.taxSummary}}
+          <tr>
+            <td class="t-center">{{tax}}%</td>
+            <td>{{sagaHalfRate tax}}%: &#x20B9;{{sagaFormatCurrency cgst}}</td>
+            <td>{{sagaHalfRate tax}}%: &#x20B9;{{sagaFormatCurrency sgst}}</td>
+            <td class="t-right">&#x20B9;{{sagaSum cgst sgst}}</td>
+          </tr>
+          {{/sagaEnsureArray}}
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
+    {{!-- ===== HSN SUMMARY ===== --}}
+    {{#if invoice.hsnSummary}}
+    <div class="saga-hsn-table-wrap">
+      <div class="saga-section-label">HSN Summary</div>
+      <table class="saga-hsn-table">
+        <thead>
+          <tr>
+            <th>HSN</th>
+            <th>Taxable Value</th>
+            <th>Central Tax Rate</th>
+            <th>Central Tax Amount</th>
+            <th>State Tax Rate</th>
+            <th>State Tax Amount</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#sagaEnsureArray invoice.hsnSummary}}
+          <tr>
+            <td class="t-center">{{hsn}}</td>
+            <td class="t-right">&#x20B9;{{sagaFormatCurrency taxableValue}}</td>
+            <td class="t-center">{{sagaHalfRate tax}}%</td>
+            <td class="t-right">&#x20B9;{{sagaFormatCurrency cgst}}</td>
+            <td class="t-center">{{sagaHalfRate tax}}%</td>
+            <td class="t-right">&#x20B9;{{sagaFormatCurrency sgst}}</td>
+            <td class="t-right">&#x20B9;{{sagaSum cgst sgst}}</td>
+          </tr>
+          {{/sagaEnsureArray}}
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
+  </div>{{!-- end .saga-eng-container --}}
+
+  {{!-- ===== FOOTER ===== --}}
+  <div class="saga-footer">
+    {{#if invoice.billedBy.email}}
+      For any enquiry, reach out via email at <strong>{{invoice.billedBy.email}}</strong>
+    {{/if}}
+    {{#if invoice.billedBy.phone}}
+      {{#if invoice.billedBy.email}}, {{/if}}call on <strong>{{invoice.billedBy.phone}}</strong>
+    {{/if}}
+  </div>
+
+</div>
