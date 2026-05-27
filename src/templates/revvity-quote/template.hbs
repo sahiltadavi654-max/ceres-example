@@ -1,160 +1,409 @@
-<div class="revvity-quote-shell">
-  <div class="revvity-container">
-    
-    <!-- Top Meta Details (Ref. No. & Date) -->
-    <div class="top-meta-block">
-      <table class="meta-details-table">
+<div class="rvq-shell">
+  <div class="rvq-page">
+
+    <!-- ===== HEADER ===== -->
+    <div class="rvq-header">
+      <div class="rvq-title-row">
+        <h1 class="rvq-doc-title">{{invoice.invoiceTitle}}</h1>
+        {{> InvoiceStatus invoice=invoice}}
+      </div>
+      {{#if invoice.billedBy.street}}
+        <div class="rvq-header-address">
+          {{invoice.billedBy.street}}{{#if invoice.billedBy.city}}, {{invoice.billedBy.city}}{{/if}}{{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}{{#if invoice.billedBy.country}}, {{invoice.billedBy.country}}{{/if}}
+        </div>
+      {{/if}}
+    </div>
+
+    <!-- ===== REF / DATE ===== -->
+    <div class="rvq-meta-row">
+      <table class="rvq-meta-table">
         <tr>
-          <td><strong>Ref. No.</strong></td>
-          <td>: &nbsp;{{invoice.invoiceNumber}}</td>
+          <td class="rvq-meta-label">Ref No</td>
+          <td class="rvq-meta-sep">:</td>
+          <td class="rvq-meta-val">{{invoice.invoiceNumber}}</td>
         </tr>
         <tr>
-          <td><strong>Dated</strong></td>
-          <td>: &nbsp;{{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</td>
+          <td class="rvq-meta-label">Dated</td>
+          <td class="rvq-meta-sep">:</td>
+          <td class="rvq-meta-val">{{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</td>
         </tr>
       </table>
     </div>
 
-    <!-- Rounded Header Card -->
-    <div class="header-card">
-      <div class="card-left">
+    <!-- ===== BILLED TO + QR ===== -->
+    <div class="rvq-billed-row">
+      <div class="rvq-billed-left">
         {{#if invoice.billedBy.logo}}
-          <img src="{{invoice.billedBy.logo}}" alt="Billed By Logo" class="company-logo" />
+          <img src="{{invoice.billedBy.logo}}" class="rvq-qr-img" alt="QR" />
         {{else}}
-          <!-- Default Mock Logo matching the red building in the design -->
-          <div class="default-logo-placeholder">
-            <svg viewBox="0 0 100 100" fill="currentColor">
-              <rect x="15" y="45" width="25" height="45" rx="2" />
-              <rect x="45" y="15" width="40" height="75" rx="3" />
-              <rect x="22" y="55" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="22" y="70" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="52" y="25" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="68" y="25" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="52" y="40" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="68" y="40" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="52" y="55" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="68" y="55" width="10" height="10" rx="1" fill="#fff" />
-              <rect x="58" y="72" width="14" height="18" rx="1" fill="#fff" />
+          <div class="rvq-qr-placeholder">
+            <svg viewBox="0 0 100 100" fill="#111">
+              <rect x="5" y="5" width="35" height="35" fill="none" stroke="#111" stroke-width="8"/>
+              <rect x="15" y="15" width="15" height="15"/>
+              <rect x="60" y="5" width="35" height="35" fill="none" stroke="#111" stroke-width="8"/>
+              <rect x="70" y="15" width="15" height="15"/>
+              <rect x="5" y="60" width="35" height="35" fill="none" stroke="#111" stroke-width="8"/>
+              <rect x="15" y="70" width="15" height="15"/>
+              <rect x="55" y="55" width="10" height="10"/>
+              <rect x="70" y="55" width="10" height="10"/>
+              <rect x="85" y="55" width="10" height="10"/>
+              <rect x="55" y="70" width="10" height="10"/>
+              <rect x="85" y="70" width="10" height="10"/>
+              <rect x="55" y="85" width="10" height="10"/>
+              <rect x="70" y="85" width="10" height="10"/>
+              <rect x="85" y="85" width="10" height="10"/>
             </svg>
           </div>
         {{/if}}
       </div>
-      <div class="card-right">
-        <h1 class="company-name">{{invoice.billedBy.name}}</h1>
-        <div class="company-address">
-          {{#if invoice.billedBy.street}}{{invoice.billedBy.street}}{{/if}}
-          {{#if invoice.billedBy.city}}, {{invoice.billedBy.city}}{{/if}}
-          {{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}
-          {{#if invoice.billedBy.pincode}} {{invoice.billedBy.pincode}}{{/if}}
-          {{#if invoice.billedBy.country}} ({{invoice.billedBy.country}}){{/if}}
-        </div>
-        
-        <div class="card-divider"></div>
-        
-        <div class="kind-attention">
-          <strong>K/A :-</strong> &nbsp;
+      <div class="rvq-billed-right">
+        <div class="rvq-billed-to-label">Billed to</div>
+        <div class="rvq-billed-name">{{invoice.billedTo.name}}</div>
+        {{#if invoice.billedTo.street}}
+          <div class="rvq-billed-addr">{{invoice.billedTo.street}}</div>
+        {{/if}}
+        {{#if invoice.billedTo.city}}
+          <div class="rvq-billed-addr">{{invoice.billedTo.city}}{{#if invoice.billedTo.state}}, {{invoice.billedTo.state}}{{/if}}{{#if invoice.billedTo.pincode}} - {{invoice.billedTo.pincode}}{{/if}}</div>
+        {{/if}}
+        {{#if invoice.billedTo.gstin}}
+          <div class="rvq-billed-addr">GSTIN: {{invoice.billedTo.gstin}}</div>
+        {{/if}}
+        <div class="rvq-billed-ka">
+          <span class="rvq-ka-label">K/A :</span>
           {{#if (getItemCustomField invoice "K/A")}}
             {{getItemCustomField invoice "K/A"}}
           {{else}}
-            {{#if invoice.billedTo.name}}{{invoice.billedTo.name}}{{/if}}
-            {{#if invoice.billedTo.phone}} - {{invoice.billedTo.phone}}{{/if}}
+            {{invoice.billedTo.name}}{{#if invoice.billedTo.phone}} - {{invoice.billedTo.phone}}{{/if}}
           {{/if}}
         </div>
-
-        <div class="intro-greeting">
-          <strong>Dear Sir,</strong> As per your requirement of Various gas items. for CDER AIIMS. We are pleased to submit our offer as below.
+        <div class="rvq-intro-text">
+          Dear Sir,<br/>
+          As per your requirement of gases item. We are pleased to submit our offer as given
         </div>
       </div>
     </div>
 
-    <!-- Items table -->
-    <table class="items-quote-table">
+    <!-- ===== ITEMS TABLE ===== -->
+    <table class="rvq-items-table">
       <thead>
         <tr>
-          <th class="col-idx"></th>
-          <th class="col-desc">DESCRIPTION</th>
-          <th class="col-hsn">HSN/ SAC</th>
-          <th class="col-qty">Qty</th>
-          <th class="col-rate">Rate</th>
-          <th class="col-amount">Amount</th>
+          <th class="rvq-col-num">#</th>
+          <th class="rvq-col-item">Item</th>
+          <th class="rvq-col-hsn">HSN/SAC</th>
+          <th class="rvq-col-qty">Qty</th>
+          <th class="rvq-col-rate">Rate</th>
+          <th class="rvq-col-amt">Amount</th>
         </tr>
       </thead>
       <tbody>
         {{#each invoice.items}}
           <tr>
-            <td class="col-idx text-center">{{addOne @index}}</td>
-            <td class="col-desc">
-              <strong>{{name}}</strong>
+            <td class="rvq-col-num rvq-td-center">{{addOne @index}}</td>
+            <td class="rvq-col-item">
+              <div class="rvq-item-name">{{name}}</div>
               {{#if description}}
-                <div class="item-description-details">
-                  {{> MarkdownViewer (prepareMarkdownViewerData description) }}
+                <div class="rvq-item-desc">
+                  {{> MarkdownViewer (prepareMarkdownViewerData description)}}
                 </div>
               {{/if}}
+              {{#if hsn}}<div class="rvq-item-hsn-tag">HSN:{{hsn}}</div>{{/if}}
+              {{#if sku}}<div class="rvq-item-sku">SKU:{{sku}} | Unit: nos</div>{{/if}}
             </td>
-            <td class="col-hsn text-center">{{#if hsn}}{{hsn}}{{else}}-{{/if}}</td>
-            <td class="col-qty text-center">{{formatQty quantity}}</td>
-            <td class="col-rate text-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue rate}}</td>
-            <td class="col-amount text-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue amount}}</td>
+            <td class="rvq-col-hsn rvq-td-center">{{#if hsn}}{{hsn}}{{else}}-{{/if}}</td>
+            <td class="rvq-col-qty rvq-td-center">{{formatQty quantity}}</td>
+            <td class="rvq-col-rate rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue rate}}</td>
+            <td class="rvq-col-amt rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue amount}}</td>
           </tr>
         {{/each}}
-
-        <!-- Pad empty rows -->
-        {{#padRows invoice.items 10}}
-          <tr class="padded-row">
-            <td class="col-idx">&nbsp;</td>
-            <td class="col-desc">&nbsp;</td>
-            <td class="col-hsn">&nbsp;</td>
-            <td class="col-qty">&nbsp;</td>
-            <td class="col-rate">&nbsp;</td>
-            <td class="col-amount">&nbsp;</td>
+        {{#padRows invoice.items 3}}
+          <tr class="rvq-pad-row">
+            <td></td><td></td><td></td><td></td><td></td><td></td>
           </tr>
         {{/padRows}}
-
-        <!-- Totals block -->
-        {{#if invoice.finalTotal.discount}}
-          <tr class="totals-row">
-            <td colspan="5" class="total-label">Discount ({{invoice.discount.amount}}%)</td>
-            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.discount}}</td>
-          </tr>
-        {{/if}}
-        {{#if invoice.finalTotal.sgst}}
-          <tr class="totals-row">
-            <td colspan="5" class="total-label">SGST</td>
-            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
-          </tr>
-        {{/if}}
-        {{#if invoice.finalTotal.cgst}}
-          <tr class="totals-row">
-            <td colspan="5" class="total-label">CGST</td>
-            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
-          </tr>
-        {{/if}}
-        {{#if invoice.finalTotal.igst}}
-          <tr class="totals-row">
-            <td colspan="5" class="total-label">IGST</td>
-            <td class="total-val">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</td>
-          </tr>
-        {{/if}}
-        <tr class="totals-row grand-total-row">
-          <td colspan="5" class="total-label">Total (INR)</td>
-          <td class="total-val"><strong>{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</strong></td>
-        </tr>
       </tbody>
     </table>
 
-    <!-- Terms and Conditions -->
-    {{#if invoice.terms.length}}
-      <div class="terms-section">
-        <h3 class="terms-header">Terms and Conditions</h3>
-        <ol class="terms-ol-list">
-          {{#each invoice.terms}}
-            {{#each this.terms}}
-              <li>{{this}}</li>
-            {{/each}}
-          {{/each}}
-        </ol>
+    <!-- ===== INVOICE TOTAL IN WORDS + TOTALS ===== -->
+    <div class="rvq-totals-section">
+      <div class="rvq-words-col">
+        <div class="rvq-words-label">Invoice total in words</div>
+        {{#if invoice.amountInWords}}
+          <div class="rvq-words-value">{{invoice.amountInWords}}</div>
+        {{else}}
+          <div class="rvq-words-value rvq-words-placeholder">Amount in words will appear here</div>
+        {{/if}}
       </div>
+      <div class="rvq-totals-col">
+        <div class="rvq-totals-grid">
+          <span>Sub Total</span>
+          <span class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.subTotal}}</span>
+
+          {{#if invoice.finalTotal.discount}}
+          <span>Discount({{invoice.discount.amount}}%)</span>
+          <span class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.discount}}</span>
+          {{/if}}
+
+          <span>Taxable Amount</span>
+          <span class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.taxableAmount}}</span>
+
+          {{#if invoice.finalTotal.cgst}}
+          <span>CGST</span>
+          <span class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</span>
+          {{/if}}
+
+          {{#if invoice.finalTotal.sgst}}
+          <span>SGST</span>
+          <span class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</span>
+          {{/if}}
+
+          {{#if invoice.finalTotal.igst}}
+          <span>IGST</span>
+          <span class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</span>
+          {{/if}}
+        </div>
+        <div class="rvq-grand-total-bar">
+          <span>Total(INR)</span>
+          <span class="rvq-grand-amount">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BANK + UPI ===== -->
+    {{#if invoice.billedBy.bankDetails}}
+    <div class="rvq-bank-upi-section">
+      <div class="rvq-bank-col">
+        <div class="rvq-section-title">Bank and UPI details</div>
+        <table class="rvq-bank-table">
+          {{#if invoice.billedBy.bankDetails.bankName}}
+          <tr>
+            <td class="rvq-bank-key">Bank Name</td>
+            <td class="rvq-bank-val">{{invoice.billedBy.bankDetails.bankName}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.accountHolderName}}
+          <tr>
+            <td class="rvq-bank-key">Account Holder Name</td>
+            <td class="rvq-bank-val">{{invoice.billedBy.bankDetails.accountHolderName}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.accountNumber}}
+          <tr>
+            <td class="rvq-bank-key">Account Number</td>
+            <td class="rvq-bank-val">{{invoice.billedBy.bankDetails.accountNumber}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.ifsc}}
+          <tr>
+            <td class="rvq-bank-key">IFSC</td>
+            <td class="rvq-bank-val">{{invoice.billedBy.bankDetails.ifsc}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.accountType}}
+          <tr>
+            <td class="rvq-bank-key">Account Type</td>
+            <td class="rvq-bank-val">{{invoice.billedBy.bankDetails.accountType}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.upi}}
+          <tr>
+            <td class="rvq-bank-key">UPI</td>
+            <td class="rvq-bank-val">{{invoice.billedBy.bankDetails.upi}}</td>
+          </tr>
+          {{/if}}
+        </table>
+      </div>
+      <div class="rvq-upi-col">
+        <div class="rvq-upi-label">Scan to pay via UPI</div>
+        {{#if invoice.billedBy.bankDetails.upiQrCode}}
+          <img src="{{invoice.billedBy.bankDetails.upiQrCode}}" class="rvq-upi-qr" alt="UPI QR" />
+        {{else}}
+          <div class="rvq-upi-qr-placeholder">
+            <svg viewBox="0 0 80 80" fill="#111">
+              <rect x="2" y="2" width="28" height="28" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="10" y="10" width="12" height="12"/>
+              <rect x="50" y="2" width="28" height="28" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="58" y="10" width="12" height="12"/>
+              <rect x="2" y="50" width="28" height="28" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="10" y="58" width="12" height="12"/>
+              <rect x="44" y="44" width="8" height="8"/>
+              <rect x="56" y="44" width="8" height="8"/>
+              <rect x="68" y="44" width="8" height="8"/>
+              <rect x="44" y="56" width="8" height="8"/>
+              <rect x="68" y="56" width="8" height="8"/>
+              <rect x="44" y="68" width="8" height="8"/>
+              <rect x="56" y="68" width="8" height="8"/>
+            </svg>
+          </div>
+        {{/if}}
+        {{#if invoice.billedBy.bankDetails.upi}}
+          <div class="rvq-upi-id">{{invoice.billedBy.bankDetails.upi}}</div>
+        {{/if}}
+        <div class="rvq-upi-note">Maximum of 1 lakh can be transferred via upi in a single day</div>
+      </div>
+      <div class="rvq-signatory-col">
+        <div class="rvq-signatory-box">Authorised Signatory</div>
+      </div>
+    </div>
+    {{else}}
+    <div class="rvq-signatory-only">
+      <div class="rvq-signatory-box">Authorised Signatory</div>
+    </div>
     {{/if}}
+
+    <!-- ===== TERMS & CONDITIONS ===== -->
+    {{#if invoice.terms.length}}
+    <div class="rvq-terms-section">
+      <div class="rvq-section-title">TERMS &amp; CONDITIONS</div>
+      <ol class="rvq-terms-list">
+        {{#each invoice.terms}}
+          {{#each this.terms}}
+            <li>{{this}}</li>
+          {{/each}}
+        {{/each}}
+      </ol>
+    </div>
+    {{/if}}
+
+    <!-- ===== ADDITIONAL NOTES ===== -->
+    {{#if invoice.notes}}
+    <div class="rvq-notes-section">
+      <div class="rvq-section-title">Additional Notes</div>
+      <div class="rvq-notes-body">
+        {{> MarkdownViewer (prepareMarkdownViewerData invoice.notes)}}
+      </div>
+    </div>
+    {{/if}}
+
+    <!-- ===== ADDITIONAL INFORMATION ===== -->
+    {{#if invoice.customFields.length}}
+    <div class="rvq-addinfo-section">
+      <div class="rvq-section-title">Additional Information</div>
+      <table class="rvq-addinfo-table">
+        {{#each invoice.customFields}}
+          <tr>
+            <td class="rvq-addinfo-key">{{label}}</td>
+            <td class="rvq-addinfo-sep">:</td>
+            <td class="rvq-addinfo-val">{{value}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+    {{/if}}
+
+    <!-- ===== ATTACHMENTS ===== -->
+    {{#if invoice.attachments.length}}
+    <div class="rvq-attach-section">
+      <div class="rvq-section-title">Attachments</div>
+      <ol class="rvq-attach-list">
+        {{#each invoice.attachments}}
+          <li>
+            {{#if url}}
+              <a href="{{url}}" class="rvq-attach-link">{{name}}</a>
+            {{else}}
+              {{name}}
+            {{/if}}
+          </li>
+        {{/each}}
+      </ol>
+    </div>
+    {{/if}}
+
+    <!-- ===== TAX RATE TABLE ===== -->
+    {{#if invoice.taxBreakup.length}}
+    <div class="rvq-tax-section">
+      <table class="rvq-tax-table">
+        <thead>
+          <tr>
+            <th rowspan="2" class="rvq-tax-hsn-col">Tax Rate</th>
+            <th colspan="2" class="rvq-tax-group">CGST</th>
+            <th colspan="2" class="rvq-tax-group">SGST</th>
+            <th rowspan="2" class="rvq-tax-total">Total</th>
+          </tr>
+          <tr>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each invoice.taxBreakup}}
+          <tr>
+            <td>{{hsn}}</td>
+            <td class="rvq-td-right">{{cgstRate}}%</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue cgstAmount}}</td>
+            <td class="rvq-td-right">{{sgstRate}}%</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue sgstAmount}}</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue total}}</td>
+          </tr>
+          {{/each}}
+          <tr class="rvq-tax-total-row">
+            <td>Total</td>
+            <td></td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
+            <td></td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
+    <!-- ===== HSN SUMMARY TABLE ===== -->
+    {{#if invoice.hsnSummary.length}}
+    <div class="rvq-hsn-section">
+      <div class="rvq-section-title">HSN Summary</div>
+      <table class="rvq-hsn-table">
+        <thead>
+          <tr>
+            <th rowspan="2">HSN</th>
+            <th rowspan="2">Taxable Value</th>
+            <th colspan="2">Central Tax</th>
+            <th colspan="2">State Tax</th>
+            <th rowspan="2">Total</th>
+          </tr>
+          <tr>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each invoice.hsnSummary}}
+          <tr>
+            <td>{{hsn}}</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue taxableValue}}</td>
+            <td class="rvq-td-center">{{cgstRate}}%</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue cgstAmount}}</td>
+            <td class="rvq-td-center">{{sgstRate}}%</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue sgstAmount}}</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue total}}</td>
+          </tr>
+          {{/each}}
+          <tr class="rvq-hsn-total-row">
+            <td>Total</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.subTotal}}</td>
+            <td></td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
+            <td></td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
+            <td class="rvq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
+    <!-- ===== FOOTER ===== -->
+    <div class="rvq-footer">
+      {{#if invoice.billedBy.email}}
+        For any enquiry, reach out via email at <a href="mailto:{{invoice.billedBy.email}}" class="rvq-footer-link">{{invoice.billedBy.email}}</a>{{#if invoice.billedBy.phone}}, call on <strong>{{invoice.billedBy.phone}}</strong>{{/if}}
+      {{else if invoice.billedBy.phone}}
+        For any enquiry, call on <strong>{{invoice.billedBy.phone}}</strong>
+      {{/if}}
+    </div>
 
   </div>
 </div>
