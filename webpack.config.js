@@ -900,7 +900,6 @@ module.exports = {
       inject: false, // We handle script/CSS injection manually
       minify: false,
     }),
-    new CspMetaPlugin(),
     new AssetManifestPlugin(),
   ],
   optimization: {

@@ -1,0 +1,805 @@
+/* ============================================================
+   Saga Engineering Quotation — Template Styles
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* ---- Root / Shell ---- */
+.sgq-shell {
+  font-family: 'Inter', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 11.5px;
+  color: #1a1a1a;
+  background: #ffffff;
+  line-height: 1.45;
+  box-sizing: border-box;
+  padding: 24px 32px;
+  max-width: 860px;
+  margin: 0 auto;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+/* ---- Page wrapper ---- */
+.sgq-page {
+  border: 1px solid #d1d5db;
+  padding: 24px 28px;
+}
+
+/* ============================================================
+   LETTERHEAD
+   ============================================================ */
+.sgq-letterhead,
+.sgq-letterhead-footer {
+  display: block;
+  width: 100%;
+}
+
+.sgq-letterhead img,
+.sgq-letterhead-footer img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.sgq-letterhead.is-empty,
+.sgq-letterhead-footer.is-empty {
+  position: absolute;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+/* ============================================================
+   HEADER — Title + Status + Address
+   ============================================================ */
+.sgq-header {
+  text-align: center;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #d1d5db;
+  margin-bottom: 14px;
+}
+
+.sgq-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.sgq-doc-title {
+  font-size: 20px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  margin: 0;
+  color: #111827;
+}
+
+.sgq-demo-badge {
+  display: inline-flex;
+}
+
+.sgq-header-address {
+  font-size: 11px;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   INFO GRID — Meta (left) + Addresses (right)
+   ============================================================ */
+.sgq-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 14px;
+}
+
+/* Left: document meta */
+.sgq-meta-col {
+  padding-right: 10px;
+}
+
+.sgq-meta-table {
+  border-collapse: collapse;
+}
+
+.sgq-meta-table td {
+  padding: 2px 0;
+  font-size: 11.5px;
+  color: #374151;
+  vertical-align: top;
+}
+
+.sgq-meta-label {
+  font-weight: 600;
+  width: 120px;
+  color: #111827;
+}
+
+.sgq-meta-sep {
+  width: 14px;
+  text-align: center;
+}
+
+.sgq-meta-val {
+  color: #374151;
+}
+
+/* Right: address pair (Billed To + Shipped To side by side) */
+.sgq-address-col {
+  border-left: 1px solid #e5e7eb;
+  padding-left: 16px;
+}
+
+.sgq-address-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.sgq-addr-heading {
+  font-size: 10px;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+  margin-bottom: 4px;
+  font-weight: 600;
+}
+
+.sgq-addr-name {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.sgq-addr-line {
+  font-size: 11px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+/* ============================================================
+   LOGISTICS — Shipped From + Transport Details
+   ============================================================ */
+.sgq-logistics-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.sgq-shipped-from-col,
+.sgq-transport-col {
+  font-size: 11px;
+}
+
+.sgq-transport-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 2px;
+  font-size: 11px;
+  color: #374151;
+}
+
+.sgq-transport-key {
+  font-weight: 600;
+  color: #111827;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.sgq-transport-val {
+  color: #4b5563;
+}
+
+/* ============================================================
+   SECTION TITLE
+   ============================================================ */
+.sgq-section-title {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 8px;
+  letter-spacing: 0.2px;
+}
+
+/* ============================================================
+   SALUTATION
+   ============================================================ */
+.sgq-salutation-section {
+  margin-bottom: 14px;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 12px;
+}
+
+.sgq-ka-row {
+  display: flex;
+  gap: 6px;
+  font-size: 11.5px;
+  margin-bottom: 3px;
+}
+
+.sgq-ka-key {
+  font-weight: 700;
+  color: #111827;
+  min-width: 80px;
+}
+
+.sgq-ka-val {
+  color: #374151;
+}
+
+.sgq-dear-sir {
+  margin-top: 8px;
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.6;
+}
+
+/* ============================================================
+   ITEMS TABLE
+   ============================================================ */
+.sgq-items-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0;
+  font-size: 11px;
+}
+
+.sgq-items-table th {
+  background-color: #0f1f38;
+  color: #ffffff;
+  padding: 7px 8px;
+  font-size: 10.5px;
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid #0f1f38;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sgq-items-table th.sgq-col-item {
+  text-align: left;
+}
+
+.sgq-items-table td {
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  vertical-align: top;
+  color: #111827;
+}
+
+/* Column widths */
+.sgq-col-num   { width: 4%;  text-align: center; }
+.sgq-col-item  { width: 32%; text-align: left; }
+.sgq-col-hsn   { width: 9%;  text-align: center; }
+.sgq-col-rate  { width: 10%; text-align: right; }
+.sgq-col-qty   { width: 6%;  text-align: center; }
+.sgq-col-amt   { width: 10%; text-align: right; }
+.sgq-col-disc  { width: 8%;  text-align: right; }
+.sgq-col-gst   { width: 7%;  text-align: center; }
+.sgq-col-igst  { width: 9%;  text-align: right; }
+.sgq-col-total { width: 10%; text-align: right; }
+.sgq-col-total-val { font-weight: 600; }
+
+.sgq-td-center { text-align: center !important; }
+.sgq-td-right  { text-align: right !important; }
+
+/* Item cell inner layout (thumb + text) */
+.sgq-item-inner {
+  display: flex;
+  gap: 8px;
+  align-items: flex-start;
+}
+
+.sgq-item-thumb {
+  width: 48px;
+  height: 48px;
+  object-fit: contain;
+  flex-shrink: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 2px;
+}
+
+.sgq-item-text {
+  flex: 1;
+  min-width: 0;
+}
+
+.sgq-item-name {
+  font-weight: 600;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #111827;
+}
+
+.sgq-item-meta {
+  font-size: 9.5px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.sgq-item-desc {
+  font-size: 10px;
+  color: #4b5563;
+  margin-top: 2px;
+  font-weight: 400;
+}
+
+.sgq-pad-row td {
+  height: 24px;
+  padding: 0 8px;
+  border: 1px solid #d1d5db;
+}
+
+/* Table footer totals row */
+.sgq-tfoot-total td {
+  background-color: #f3f4f6;
+  border: 1px solid #d1d5db;
+  font-size: 11px;
+  padding: 6px 8px;
+  font-weight: 600;
+}
+
+.sgq-tfoot-sum-label {
+  text-align: left;
+  color: #374151;
+}
+
+/* ============================================================
+   TOTALS SECTION
+   ============================================================ */
+.sgq-totals-section {
+  display: flex;
+  gap: 0;
+  border: 1px solid #d1d5db;
+  border-top: none;
+  margin-bottom: 14px;
+}
+
+.sgq-words-col {
+  flex: 1;
+  padding: 10px 12px;
+  border-right: 1px solid #d1d5db;
+}
+
+.sgq-words-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #111827;
+  margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.sgq-words-value {
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.sgq-words-placeholder {
+  color: #9ca3af;
+  font-style: italic;
+}
+
+.sgq-totals-col {
+  width: 270px;
+  flex-shrink: 0;
+}
+
+.sgq-totals-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  padding: 8px 12px;
+  gap: 2px 12px;
+  border-bottom: 1px solid #d1d5db;
+}
+
+.sgq-totals-grid > span {
+  padding: 2px 0;
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.sgq-totals-grid > span.sgq-td-right {
+  text-align: right;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+.sgq-grand-total-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: #f9fafb;
+}
+
+.sgq-grand-total-bar > span:first-child {
+  font-size: 12px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.sgq-grand-amount {
+  font-size: 14px;
+  font-weight: 800;
+  color: #111827;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ============================================================
+   BANK & UPI SECTION
+   ============================================================ */
+.sgq-bank-upi-section {
+  display: flex;
+  gap: 18px;
+  border: 1px solid #d1d5db;
+  padding: 12px 14px;
+  margin-bottom: 14px;
+  align-items: flex-start;
+}
+
+.sgq-signatory-only {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+.sgq-bank-col {
+  flex: 1;
+}
+
+.sgq-bank-table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.sgq-bank-table td {
+  padding: 2px 0;
+  font-size: 11px;
+  vertical-align: top;
+}
+
+.sgq-bank-key {
+  color: #6b7280;
+  width: 140px;
+  font-weight: 500;
+  padding-right: 8px;
+}
+
+.sgq-bank-val {
+  color: #111827;
+}
+
+.sgq-upi-col {
+  width: 140px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.sgq-upi-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.sgq-upi-qr {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+}
+
+.sgq-upi-qr-placeholder {
+  width: 80px;
+  height: 80px;
+  padding: 4px;
+  border: 1px solid #d1d5db;
+}
+
+.sgq-upi-qr-placeholder svg {
+  width: 100%;
+  height: 100%;
+}
+
+.sgq-upi-id {
+  font-size: 10px;
+  color: #374151;
+  margin-top: 4px;
+  word-break: break-all;
+}
+
+.sgq-upi-note {
+  font-size: 9px;
+  color: #9ca3af;
+  margin-top: 4px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.sgq-signatory-col {
+  width: 130px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.sgq-signatory-box {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #374151;
+  text-align: center;
+  border-top: 1px solid #9ca3af;
+  padding-top: 5px;
+  width: 120px;
+}
+
+/* ============================================================
+   TERMS & CONDITIONS
+   ============================================================ */
+.sgq-terms-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.sgq-terms-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.sgq-terms-list li {
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.55;
+  margin-bottom: 4px;
+}
+
+/* ============================================================
+   ADDITIONAL NOTES
+   ============================================================ */
+.sgq-notes-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.sgq-notes-body {
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.55;
+}
+
+/* ============================================================
+   ADDITIONAL INFORMATION
+   ============================================================ */
+.sgq-addinfo-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.sgq-addinfo-table {
+  border-collapse: collapse;
+}
+
+.sgq-addinfo-table td {
+  padding: 2px 0;
+  font-size: 11px;
+  vertical-align: top;
+}
+
+.sgq-addinfo-key {
+  width: 120px;
+  font-weight: 600;
+  color: #374151;
+  padding-right: 6px;
+}
+
+.sgq-addinfo-sep {
+  width: 14px;
+  text-align: center;
+  color: #9ca3af;
+  padding-right: 6px;
+}
+
+.sgq-addinfo-val {
+  color: #111827;
+}
+
+/* ============================================================
+   ATTACHMENTS
+   ============================================================ */
+.sgq-attach-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.sgq-attach-list {
+  margin: 0;
+  padding-left: 18px;
+}
+
+.sgq-attach-list li {
+  font-size: 11px;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 2px;
+}
+
+.sgq-attach-link {
+  color: #2563eb;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.sgq-attach-link:hover {
+  text-decoration: underline;
+}
+
+/* ============================================================
+   TAX RATE TABLE
+   ============================================================ */
+.sgq-tax-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.sgq-tax-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.sgq-tax-table th {
+  background-color: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  text-align: center;
+  font-size: 10.5px;
+}
+
+.sgq-tax-group {
+  border-bottom: 1px solid #d1d5db;
+}
+
+.sgq-tax-hsn-col { width: 18%; }
+.sgq-tax-total   { width: 18%; }
+
+.sgq-tax-table td {
+  padding: 5px 8px;
+  border: 1px solid #d1d5db;
+  color: #111827;
+}
+
+.sgq-tax-total-row td {
+  font-weight: 700;
+  background-color: #f9fafb;
+}
+
+/* ============================================================
+   HSN SUMMARY TABLE
+   ============================================================ */
+.sgq-hsn-section {
+  margin-bottom: 12px;
+  page-break-inside: avoid;
+}
+
+.sgq-hsn-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.sgq-hsn-table th {
+  background-color: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+  padding: 6px 8px;
+  border: 1px solid #d1d5db;
+  text-align: center;
+  font-size: 10.5px;
+}
+
+.sgq-hsn-table td {
+  padding: 5px 8px;
+  border: 1px solid #d1d5db;
+  color: #111827;
+}
+
+.sgq-hsn-total-row td {
+  font-weight: 700;
+  background-color: #f9fafb;
+}
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.sgq-footer {
+  margin-top: 16px;
+  padding-top: 10px;
+  border-top: 1px solid #e5e7eb;
+  font-size: 10.5px;
+  color: #6b7280;
+  text-align: center;
+}
+
+.sgq-footer-link {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+/* ============================================================
+   PRINT OPTIMIZATIONS
+   ============================================================ */
+@media print {
+  body { background: #ffffff; margin: 0; }
+
+  .sgq-shell {
+    padding: 0;
+    max-width: 100%;
+  }
+
+  .sgq-page {
+    border: none;
+    padding: 16px;
+  }
+
+  .sgq-items-table th {
+    background-color: #0f1f38 !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sgq-tax-table th,
+  .sgq-hsn-table th {
+    background-color: #f3f4f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sgq-grand-total-bar {
+    background-color: #f9fafb !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sgq-tfoot-total td {
+    background-color: #f3f4f6 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sgq-tax-total-row td,
+  .sgq-hsn-total-row td {
+    background-color: #f9fafb !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .sgq-bank-upi-section,
+  .sgq-terms-section,
+  .sgq-hsn-section,
+  .sgq-tax-section,
+  .sgq-notes-section,
+  .sgq-addinfo-section,
+  .sgq-attach-section {
+    page-break-inside: avoid;
+  }
+}

@@ -1,0 +1,549 @@
+<div class="sgq-shell">
+  <div class="sgq-page">
+
+    <!-- ===== LETTERHEAD ===== -->
+    <div class="no-dibella sgq-letterhead{{#unless invoice.letterHead}} is-empty{{/unless}}">
+      {{#if invoice.letterHead}}
+        <img src="{{invoice.letterHead}}" alt="Letterhead" data-ceres-height="letterhead" />
+      {{else}}
+        <img alt="Letterhead" data-ceres-height="letterhead" />
+      {{/if}}
+    </div>
+
+    <!-- ===== HEADER — Title + Status + Address ===== -->
+    <div class="sgq-header">
+      <div class="sgq-title-row">
+        <h1 class="sgq-doc-title">{{invoice.invoiceTitle}}</h1>
+        {{> InvoiceStatus invoice=invoice}}
+        <div class="sgq-demo-badge">{{> DemoBadge }}</div>
+      </div>
+      {{#if invoice.billedBy.street}}
+        <div class="sgq-header-address">
+          {{invoice.billedBy.street}}{{#if invoice.billedBy.city}}, {{invoice.billedBy.city}}{{/if}}{{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}{{#if invoice.billedBy.country}}, {{invoice.billedBy.country}}{{/if}}
+        </div>
+      {{/if}}
+    </div>
+
+    <!-- ===== META + BILLED TO + SHIPPED TO ===== -->
+    <div class="sgq-info-grid">
+
+      <!-- Left column: Document meta -->
+      <div class="sgq-meta-col">
+        <table class="sgq-meta-table">
+          <tr>
+            <td class="sgq-meta-label">
+              {{#if invoice.customLabels.invoiceNumber}}{{invoice.customLabels.invoiceNumber}}{{else}}Quotation No.{{/if}}
+            </td>
+            <td class="sgq-meta-sep">:</td>
+            <td class="sgq-meta-val">{{invoice.invoiceNumber}}</td>
+          </tr>
+          <tr>
+            <td class="sgq-meta-label">
+              {{#if invoice.customLabels.invoiceDate}}{{invoice.customLabels.invoiceDate}}{{else}}Quotation Date{{/if}}
+            </td>
+            <td class="sgq-meta-sep">:</td>
+            <td class="sgq-meta-val">{{formateShortDateWithOffset invoice.invoiceDate invoice.ownerOffset}}</td>
+          </tr>
+          {{#if invoice.purchaseOrderNumber}}
+          <tr>
+            <td class="sgq-meta-label">
+              {{#if invoice.customLabels.purchaseOrderNumber}}{{invoice.customLabels.purchaseOrderNumber}}{{else}}Project Number{{/if}}
+            </td>
+            <td class="sgq-meta-sep">:</td>
+            <td class="sgq-meta-val">{{invoice.purchaseOrderNumber}}</td>
+          </tr>
+          {{/if}}
+        </table>
+      </div>
+
+      <!-- Right column: Billed To + Shipped To side by side -->
+      <div class="sgq-address-col">
+        <div class="sgq-address-pair">
+          <div class="sgq-billed-block">
+            <div class="sgq-addr-heading">Billed to</div>
+            <div class="sgq-addr-name">{{invoice.billedTo.name}}</div>
+            {{#if invoice.billedTo.street}}
+              <div class="sgq-addr-line">{{invoice.billedTo.street}}</div>
+            {{/if}}
+            {{#if invoice.billedTo.city}}
+              <div class="sgq-addr-line">
+                {{invoice.billedTo.city}}{{#if invoice.billedTo.state}}, {{invoice.billedTo.state}}{{/if}}{{#if invoice.billedTo.pincode}} - {{invoice.billedTo.pincode}}{{/if}}
+              </div>
+            {{/if}}
+            {{#if invoice.billedTo.gstin}}
+              <div class="sgq-addr-line">GSTIN: {{invoice.billedTo.gstin}}</div>
+            {{/if}}
+          </div>
+
+          {{#if mapped.visibility.shippedTo}}
+          <div class="sgq-shipped-block">
+            <div class="sgq-addr-heading">Shipped to</div>
+            <div class="sgq-addr-name">{{invoice.shippedTo.name}}</div>
+            {{#if invoice.shippedTo.street}}
+              <div class="sgq-addr-line">{{invoice.shippedTo.street}}</div>
+            {{/if}}
+            {{#if invoice.shippedTo.city}}
+              <div class="sgq-addr-line">
+                {{invoice.shippedTo.city}}{{#if invoice.shippedTo.state}}, {{invoice.shippedTo.state}}{{/if}}{{#if invoice.shippedTo.pincode}} - {{invoice.shippedTo.pincode}}{{/if}}
+              </div>
+            {{/if}}
+            {{#if invoice.shippedTo.gstin}}
+              <div class="sgq-addr-line">GSTIN: {{invoice.shippedTo.gstin}}</div>
+            {{/if}}
+          </div>
+          {{/if}}
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== SHIPPED FROM + TRANSPORT DETAILS ===== -->
+    {{#if mapped.visibility.showLogistics}}
+    <div class="sgq-logistics-grid">
+      <div class="sgq-shipped-from-col">
+        <div class="sgq-section-title">Shipped From</div>
+        <div class="sgq-addr-name">{{invoice.billedBy.name}}</div>
+        {{#if invoice.billedBy.street}}
+          <div class="sgq-addr-line">{{invoice.billedBy.street}}</div>
+        {{/if}}
+        {{#if invoice.billedBy.city}}
+          <div class="sgq-addr-line">
+            {{invoice.billedBy.city}}{{#if invoice.billedBy.state}}, {{invoice.billedBy.state}}{{/if}}{{#if invoice.billedBy.pincode}} - {{invoice.billedBy.pincode}}{{/if}}
+          </div>
+        {{/if}}
+        {{#if invoice.billedBy.gstin}}
+          <div class="sgq-addr-line">GSTIN: {{invoice.billedBy.gstin}}</div>
+        {{/if}}
+      </div>
+      <div class="sgq-transport-col">
+        <div class="sgq-section-title">Transport Details</div>
+        {{#if invoice.transportDetails.transporter.name}}
+          <div class="sgq-transport-row">
+            <span class="sgq-transport-key">{{#if invoice.customLabels.transportName}}{{invoice.customLabels.transportName}}{{else}}Kind Attn-{{/if}}</span>
+            <span class="sgq-transport-val">{{invoice.transportDetails.transporter.name}}</span>
+          </div>
+        {{/if}}
+        {{#if invoice.transportDetails.transportMode}}
+          <div class="sgq-transport-row">
+            <span class="sgq-transport-key">Sub-</span>
+            <span class="sgq-transport-val">{{invoice.transportDetails.transportMode}}</span>
+          </div>
+        {{/if}}
+        {{#if invoice.transportDetails.challanNumber}}
+          <div class="sgq-transport-row">
+            <span class="sgq-transport-key">{{#if invoice.customLabels.challanNumber}}{{invoice.customLabels.challanNumber}}{{else}}Sub-{{/if}}</span>
+            <span class="sgq-transport-val">{{invoice.transportDetails.challanNumber}}</span>
+          </div>
+        {{/if}}
+        {{#if invoice.transportDetails.extraInformation}}
+          <div class="sgq-transport-row">
+            <span class="sgq-transport-key">{{#if invoice.customLabels.transportExtraInfo}}{{invoice.customLabels.transportExtraInfo}}{{else}}Sub-{{/if}}</span>
+            <span class="sgq-transport-val">{{invoice.transportDetails.extraInformation}}</span>
+          </div>
+        {{/if}}
+      </div>
+    </div>
+    {{/if}}
+
+    <!-- ===== SALUTATION + CUSTOM LABELS ===== -->
+    <div class="sgq-salutation-section">
+      {{#if invoice.customFields.length}}
+        {{#each invoice.customFields}}
+          {{#if (eq label "Kind Attn")}}
+            <div class="sgq-ka-row">
+              <span class="sgq-ka-key">Kind Attn :</span>
+              <span class="sgq-ka-val">{{value}}</span>
+            </div>
+          {{/if}}
+          {{#if (eq label "Sub")}}
+            <div class="sgq-ka-row">
+              <span class="sgq-ka-key">Sub :</span>
+              <span class="sgq-ka-val">{{value}}</span>
+            </div>
+          {{/if}}
+        {{/each}}
+      {{else}}
+        {{#if invoice.billedTo.name}}
+          <div class="sgq-ka-row">
+            <span class="sgq-ka-key">Kind Attn :</span>
+            <span class="sgq-ka-val">{{invoice.billedTo.name}}</span>
+          </div>
+        {{/if}}
+      {{/if}}
+      <div class="sgq-dear-sir">
+        Dear Sir,<br />
+        With references to above, we are pleased to quote our lowest prices for the supply of followings, subject to
+        terms and conditions mentioned here under.
+      </div>
+    </div>
+
+    <!-- ===== ITEMS TABLE ===== -->
+    <table class="sgq-items-table">
+      <thead>
+        <tr>
+          <th class="sgq-col-num">#</th>
+          <th class="sgq-col-item">Item</th>
+          {{#if derived.showHsnColumn}}<th class="sgq-col-hsn">HSN/SAC</th>{{/if}}
+          <th class="sgq-col-rate">Rate</th>
+          <th class="sgq-col-qty">Qty</th>
+          <th class="sgq-col-amt">Amount</th>
+          {{#if mapped.visibility.showDiscount}}<th class="sgq-col-disc">Discount</th>{{/if}}
+          {{#if mapped.visibility.showCgstSgst}}<th class="sgq-col-gst">GST %</th>{{/if}}
+          {{#if mapped.visibility.showIgst}}<th class="sgq-col-igst">IGST</th>{{/if}}
+          {{#if mapped.visibility.showCgstSgst}}<th class="sgq-col-igst">IGST</th>{{/if}}
+          <th class="sgq-col-total">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#each invoice.items}}
+          <tr>
+            <td class="sgq-col-num sgq-td-center">{{addOne @index}}</td>
+            <td class="sgq-col-item">
+              <div class="sgq-item-inner">
+                {{#if images.[0]}}
+                  <img src="{{images.[0]}}" class="sgq-item-thumb" alt="Item" />
+                {{/if}}
+                <div class="sgq-item-text">
+                  <div class="sgq-item-name">{{name}}</div>
+                  {{#if ../advanceOptions.showSkuInInvoice}}{{#if sku}}<div class="sgq-item-meta">SKU: {{sku}}</div>{{/if}}{{/if}}
+                  {{#if ../derived.showInlineHsn}}{{#if hsn}}<div class="sgq-item-meta">HSN/SAC: {{hsn}}</div>{{/if}}{{/if}}
+                  {{#if description}}
+                    <div class="sgq-item-desc">
+                      {{> MarkdownViewer (prepareMarkdownViewerData description) }}
+                    </div>
+                  {{/if}}
+                </div>
+              </div>
+            </td>
+            {{#if ../derived.showHsnColumn}}<td class="sgq-td-center">{{#if hsn}}{{hsn}}{{else}}-{{/if}}</td>{{/if}}
+            <td class="sgq-td-right">{{../invoice.customCurrencySymbol}}{{formatCurrencyValue rate}}</td>
+            <td class="sgq-td-center">{{formatQty quantity}}</td>
+            <td class="sgq-td-right">{{../invoice.customCurrencySymbol}}{{formatCurrencyValue amount}}</td>
+            {{#if ../mapped.visibility.showDiscount}}<td class="sgq-td-right">{{#if discount}}{{discount}}%{{else}}-{{/if}}</td>{{/if}}
+            {{#if ../mapped.visibility.showCgstSgst}}
+              <td class="sgq-td-center">{{#if cgstRate}}{{cgstRate}}%{{else}}-{{/if}}</td>
+            {{/if}}
+            {{#if ../mapped.visibility.showIgst}}
+              <td class="sgq-td-right">{{../invoice.customCurrencySymbol}}{{formatCurrencyValue igst}}</td>
+            {{/if}}
+            {{#if ../mapped.visibility.showCgstSgst}}
+              <td class="sgq-td-right">{{../invoice.customCurrencySymbol}}{{formatCurrencyValue igst}}</td>
+            {{/if}}
+            <td class="sgq-td-right sgq-col-total-val"><strong>{{../invoice.customCurrencySymbol}}{{formatCurrencyValue subTotal}}</strong></td>
+          </tr>
+        {{/each}}
+        {{#padRows invoice.items 3}}
+          <tr class="sgq-pad-row">
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        {{/padRows}}
+      </tbody>
+      <tfoot>
+        <tr class="sgq-tfoot-total">
+          <td colspan="4" class="sgq-tfoot-sum-label">
+            ₹{{formatCurrencyValue invoice.finalTotal.subTotal}}
+          </td>
+          <td class="sgq-td-center">{{invoice.totalQuantity}}</td>
+          <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.subTotal}}</td>
+          {{#if mapped.visibility.showDiscount}}<td></td>{{/if}}
+          {{#if mapped.visibility.showCgstSgst}}<td></td>{{/if}}
+          {{#if mapped.visibility.showIgst}}<td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</td>{{/if}}
+          {{#if mapped.visibility.showCgstSgst}}<td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</td>{{/if}}
+          <td class="sgq-td-right"><strong>{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</strong></td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <!-- ===== TOTALS SECTION ===== -->
+    <div class="sgq-totals-section">
+      <div class="sgq-words-col">
+        <div class="sgq-words-label">Invoice total in words</div>
+        {{#if invoice.amountInWords}}
+          <div class="sgq-words-value">{{invoice.amountInWords}}</div>
+        {{else}}
+          <div class="sgq-words-value sgq-words-placeholder">Amount in words will appear here</div>
+        {{/if}}
+      </div>
+      <div class="sgq-totals-col">
+        <div class="sgq-totals-grid">
+          <span>Sub Total</span>
+          <span class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.subTotal}}</span>
+
+          {{#if invoice.finalTotal.discount}}
+          <span>Discount({{invoice.discount.amount}}%)</span>
+          <span class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.discount}}</span>
+          {{/if}}
+
+          <span>Taxable Amount</span>
+          <span class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.taxableAmount}}</span>
+
+          {{#if invoice.finalTotal.cgst}}
+          <span>CGST</span>
+          <span class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</span>
+          {{/if}}
+
+          {{#if invoice.finalTotal.sgst}}
+          <span>{{#if mapped.visibility.isUtgst}}UTGST{{else}}SGST{{/if}}</span>
+          <span class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</span>
+          {{/if}}
+
+          {{#if invoice.finalTotal.igst}}
+          <span>IGST</span>
+          <span class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.igst}}</span>
+          {{/if}}
+        </div>
+        <div class="sgq-grand-total-bar">
+          <span>Total(INR)</span>
+          <span class="sgq-grand-amount">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== BANK + UPI + SIGNATORY ===== -->
+    {{#if invoice.billedBy.bankDetails}}
+    <div class="sgq-bank-upi-section">
+      <div class="sgq-bank-col">
+        <div class="sgq-section-title">Bank and UPI details</div>
+        <table class="sgq-bank-table">
+          {{#if invoice.billedBy.bankDetails.bankName}}
+          <tr>
+            <td class="sgq-bank-key">Bank Name</td>
+            <td class="sgq-bank-val">{{invoice.billedBy.bankDetails.bankName}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.accountHolderName}}
+          <tr>
+            <td class="sgq-bank-key">Account Holder Name</td>
+            <td class="sgq-bank-val">{{invoice.billedBy.bankDetails.accountHolderName}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.accountNumber}}
+          <tr>
+            <td class="sgq-bank-key">Account Number</td>
+            <td class="sgq-bank-val">{{invoice.billedBy.bankDetails.accountNumber}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.ifsc}}
+          <tr>
+            <td class="sgq-bank-key">IFSC</td>
+            <td class="sgq-bank-val">{{invoice.billedBy.bankDetails.ifsc}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.accountType}}
+          <tr>
+            <td class="sgq-bank-key">Account Type</td>
+            <td class="sgq-bank-val">{{invoice.billedBy.bankDetails.accountType}}</td>
+          </tr>
+          {{/if}}
+          {{#if invoice.billedBy.bankDetails.upi}}
+          <tr>
+            <td class="sgq-bank-key">UPI</td>
+            <td class="sgq-bank-val">{{invoice.billedBy.bankDetails.upi}}</td>
+          </tr>
+          {{/if}}
+        </table>
+      </div>
+      <div class="sgq-upi-col">
+        <div class="sgq-upi-label">Scan to pay via UPI</div>
+        {{#if invoice.billedBy.bankDetails.upiQrCode}}
+          <img src="{{invoice.billedBy.bankDetails.upiQrCode}}" class="sgq-upi-qr" alt="UPI QR" />
+        {{else}}
+          <div class="sgq-upi-qr-placeholder">
+            <svg viewBox="0 0 80 80" fill="#111">
+              <rect x="2" y="2" width="28" height="28" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="10" y="10" width="12" height="12"/>
+              <rect x="50" y="2" width="28" height="28" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="58" y="10" width="12" height="12"/>
+              <rect x="2" y="50" width="28" height="28" fill="none" stroke="#111" stroke-width="6"/>
+              <rect x="10" y="58" width="12" height="12"/>
+              <rect x="44" y="44" width="8" height="8"/>
+              <rect x="56" y="44" width="8" height="8"/>
+              <rect x="68" y="44" width="8" height="8"/>
+              <rect x="44" y="56" width="8" height="8"/>
+              <rect x="68" y="56" width="8" height="8"/>
+              <rect x="44" y="68" width="8" height="8"/>
+              <rect x="56" y="68" width="8" height="8"/>
+            </svg>
+          </div>
+        {{/if}}
+        {{#if invoice.billedBy.bankDetails.upi}}
+          <div class="sgq-upi-id">{{invoice.billedBy.bankDetails.upi}}</div>
+        {{/if}}
+        <div class="sgq-upi-note">Maximum of 1 lakh can be transferred via upi in a single day</div>
+      </div>
+      <div class="sgq-signatory-col">
+        <div class="sgq-signatory-box">Authorised Signatory</div>
+      </div>
+    </div>
+    {{else}}
+    <div class="sgq-signatory-only">
+      <div class="sgq-signatory-box">Authorised Signatory</div>
+    </div>
+    {{/if}}
+
+    <!-- ===== TERMS & CONDITIONS ===== -->
+    {{#if invoice.terms.length}}
+    <div class="sgq-terms-section">
+      <div class="sgq-section-title">TERMS &amp; CONDITIONS</div>
+      <ol class="sgq-terms-list">
+        {{#each invoice.terms}}
+          {{#each this.terms}}
+            <li>{{this}}</li>
+          {{/each}}
+        {{/each}}
+      </ol>
+    </div>
+    {{/if}}
+
+    <!-- ===== ADDITIONAL NOTES ===== -->
+    {{#if invoice.notes}}
+    <div class="sgq-notes-section">
+      <div class="sgq-section-title">Additional Notes</div>
+      <div class="sgq-notes-body">
+        {{> MarkdownViewer (prepareMarkdownViewerData invoice.notes)}}
+      </div>
+    </div>
+    {{/if}}
+
+    <!-- ===== ADDITIONAL INFORMATION ===== -->
+    {{#if invoice.customFields.length}}
+    <div class="sgq-addinfo-section">
+      <div class="sgq-section-title">Additional Information</div>
+      <table class="sgq-addinfo-table">
+        {{#each invoice.customFields}}
+          <tr>
+            <td class="sgq-addinfo-key">{{label}}</td>
+            <td class="sgq-addinfo-sep">:</td>
+            <td class="sgq-addinfo-val">{{value}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+    {{/if}}
+
+    <!-- ===== ATTACHMENTS ===== -->
+    {{#if invoice.attachments.length}}
+    <div class="sgq-attach-section">
+      <div class="sgq-section-title">Attachments</div>
+      <ol class="sgq-attach-list">
+        {{#each invoice.attachments}}
+          <li>
+            {{#if url}}
+              <a href="{{url}}" class="sgq-attach-link">{{name}}</a>
+            {{else}}
+              {{name}}
+            {{/if}}
+          </li>
+        {{/each}}
+      </ol>
+    </div>
+    {{/if}}
+
+    <!-- ===== TAX RATE TABLE ===== -->
+    {{#if invoice.taxBreakup.length}}
+    <div class="sgq-tax-section">
+      <table class="sgq-tax-table">
+        <thead>
+          <tr>
+            <th rowspan="2" class="sgq-tax-hsn-col">Tax Rate</th>
+            <th colspan="2" class="sgq-tax-group">CGST</th>
+            <th colspan="2" class="sgq-tax-group">SGST</th>
+            <th rowspan="2" class="sgq-tax-total">Total</th>
+          </tr>
+          <tr>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each invoice.taxBreakup}}
+          <tr>
+            <td>{{hsn}}</td>
+            <td class="sgq-td-right">{{cgstRate}}%</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue cgstAmount}}</td>
+            <td class="sgq-td-right">{{sgstRate}}%</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue sgstAmount}}</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue total}}</td>
+          </tr>
+          {{/each}}
+          <tr class="sgq-tax-total-row">
+            <td>Total</td>
+            <td></td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
+            <td></td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
+    <!-- ===== HSN SUMMARY TABLE ===== -->
+    {{#if invoice.hsnSummary.length}}
+    <div class="sgq-hsn-section">
+      <div class="sgq-section-title">HSN Summary</div>
+      <table class="sgq-hsn-table">
+        <thead>
+          <tr>
+            <th rowspan="2">HSN</th>
+            <th rowspan="2">Taxable Value</th>
+            <th colspan="2">Central Tax</th>
+            <th colspan="2">State Tax</th>
+            <th rowspan="2">Total</th>
+          </tr>
+          <tr>
+            <th>Rate</th>
+            <th>Amount</th>
+            <th>Rate</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each invoice.hsnSummary}}
+          <tr>
+            <td>{{hsn}}</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue taxableValue}}</td>
+            <td class="sgq-td-center">{{cgstRate}}%</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue cgstAmount}}</td>
+            <td class="sgq-td-center">{{sgstRate}}%</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue sgstAmount}}</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue total}}</td>
+          </tr>
+          {{/each}}
+          <tr class="sgq-hsn-total-row">
+            <td>Total</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.subTotal}}</td>
+            <td></td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.cgst}}</td>
+            <td></td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.sgst}}</td>
+            <td class="sgq-td-right">{{invoice.customCurrencySymbol}}{{formatCurrencyValue invoice.finalTotal.total}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    {{/if}}
+
+    <!-- ===== FOOTER ===== -->
+    <div class="sgq-footer">
+      {{#if invoice.billedBy.email}}
+        For any enquiry, reach out via email at <a href="mailto:{{invoice.billedBy.email}}" class="sgq-footer-link">{{invoice.billedBy.email}}</a>{{#if invoice.billedBy.phone}}, call on <strong>{{invoice.billedBy.phone}}</strong>{{/if}}
+      {{else if invoice.billedBy.phone}}
+        For any enquiry, call on <strong>{{invoice.billedBy.phone}}</strong>
+      {{/if}}
+    </div>
+
+    <!-- ===== LETTERHEAD FOOTER ===== -->
+    <div class="no-dibella sgq-letterhead-footer{{#unless invoice.letterHeadFooter}} is-empty{{/unless}}">
+      {{#if invoice.letterHeadFooter}}
+        <img src="{{invoice.letterHeadFooter}}" alt="Letterhead footer" data-ceres-height="letterhead-footer" />
+      {{else}}
+        <img alt="Letterhead footer" data-ceres-height="letterhead-footer" />
+      {{/if}}
+    </div>
+
+  </div>
+</div>
